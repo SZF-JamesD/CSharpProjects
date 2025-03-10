@@ -5,7 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
-namespace Ex0203.Tests
+namespace Ex0203Test
 {
     [TestClass]
     public class PersonServiceTests

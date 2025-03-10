@@ -1,2 +1,39 @@
-.vs/
+# Build artifacts
+**/bin/
+**/obj/
+
+# NuGet packages
 packages/
+*.nupkg
+*.snupkg
+
+# Test results
+testresults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Visual Studio files
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+*.csproj.user
+*.pidb
+*.svd
+*.pdb
+
+# IDE-specific settings
+.idea/
+*.sln.ide
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+
+C:\Users\052277\Source\Repos\CSharpProjects\LE_07\Ex0204Test
