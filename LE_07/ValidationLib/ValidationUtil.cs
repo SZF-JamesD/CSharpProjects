@@ -8,14 +8,18 @@ namespace ValidationLib
 {
     public static class ValidationUtil
     {
-        public static bool IsValidFullName(string checkName)
+        public static ValidationResult<string> IsValidFullName(string checkName)
         {
             if (string.IsNullOrWhiteSpace(checkName))
-                return false;
+                return ValidationResult<string>.Failure("Full name cannot be empty.");
 
             var namePattern = @"^(?!^\s*$)([A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?)\s+([A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?)$";
-            return Regex.IsMatch(checkName, namePattern, RegexOptions.None);
+            if (!Regex.IsMatch(checkName, namePattern))
+                return ValidationResult<string>.Failure("Invalid full name format.");
+
+            return ValidationResult<string>.Success(CapitalizeName(checkName));
         }
+
 
         public static string CapitalizeName(string name)
         {
@@ -33,30 +37,44 @@ namespace ValidationLib
         }
 
 
-        public static bool IsValidAddress(string checkAddress)
+        public static ValidationResult<AddressParts> IsValidAddress(string checkAddress)
         {
             if (string.IsNullOrWhiteSpace(checkAddress))
-                return false;
+                return ValidationResult<AddressParts>.Failure("Address cannot be empty.");
 
-            var addressPattern = @"^(?!^\s*$)([A-Za-zÄÖÜäöüß\s-]+=\s(\d+)(?:\s((?:Apt|Apartment|Top|Unit|Flat|/)\.?\s*\d+))?\s+(\d{4})\s+([A-Za-zÄÖÜäöüß\s\.-]+)$";
-            return Regex.IsMatch(checkAddress, addressPattern, RegexOptions.None);
+            var addressPattern = @"^(?<Street>[A-Za-zÄÖÜäöüß\s-]+)\s(?<Number>\d+)(?:\s(?<Apartment>(?:Apt|Apartment|Top|Unit|Flat|/)\.?\s*\d+))?\s+(?<PostalCode>\d{4})\s+(?<City>[A-Za-zÄÖÜäöüß\s\.-]+)$";
+            var match = Regex.Match(checkAddress, addressPattern);
+            if (!match.Success)
+                return ValidationResult<AddressParts>.Failure("Invalid address format, please follow the Street, nr(optionally with apt number), Postal Code(4 Numbers), City.");
+
+            var parts = new AddressParts
+            {
+                Street = match.Groups["Street"].Value.Trim(),
+                Number = match.Groups["Number"].Value.Trim(),
+                Apartment = match.Groups["Apartment"].Success ? match.Groups["Apartment"].Value.Trim() : null,
+                PostalCode = match.Groups["PostalCode"].Value.Trim(),
+                City = match.Groups["City"].Value.Trim()
+            };
+
+
+            return ValidationResult<AddressParts>.Success(parts);
         }
 
 
-        public static string ValidateAnFormatDob(string dob)
+        public static ValidationResult<string> ValidateAnFormatDob(string dob)
         {
             if (string.IsNullOrWhiteSpace(dob))
-                throw new ArgumentException("DOB cannot be empty.");
+                return ValidationResult<string>.Failure("DOB cannot be empty.");
 
             dob = Regex.Replace(dob, @"[-/,_]", ".");
-            var dobPattern = @"^(?!^\s*$)(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.(19[2-9][0-9]|20[0-1][0-9]|202[0-4]=$";
+            var dobPattern = @"^(?!^\s*$)(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.(19[2-9][0-9]|20[0-1][0-9]|202[0-4]$";
 
             if (!Regex.IsMatch(dob, dobPattern, RegexOptions.None))
-                throw new ArgumentException("Date format is incorrect. Please try again with the format dd.mm.yyyy");
+                return ValidationResult<string>.Failure("Date format is incorrect. Please try again with the format dd.mm.yyyy");
 
             var parts = dob.Split('.');
             if (parts.Length != 3)
-                throw new ArgumentException("Date format is incorrect. Please try again with the format dd.mm.yyyy");
+                return ValidationResult<string>.Failure("Date format is incorrect. Please try again with the format dd.mm.yyyy");
 
             if (int.TryParse(parts[0], out int day) &&
                 int.TryParse(parts[1], out int month) &&
@@ -65,50 +83,58 @@ namespace ValidationLib
                 try
                 {
                     DateTime validatedDob = new DateTime(year, month, day);
-                    return validatedDob.ToString("dd.MM.yyyy");
+                    return ValidationResult<string>.Success(validatedDob.ToString("dd.MM.yyyy"));
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    throw new ArgumentException("Invalid date (e.g., 30th of February). Please try again.");
+                    return ValidationResult<string>.Failure("Invalid date (e.g., 30th of February). Please try again.");
                 }
             }
             else
             {
-                throw new ArgumentException("Date format is incorrect. Please try again.");
+                return ValidationResult<string>.Failure("Date format is incorrect. Please try again.");
             }
         }
 
 
-        public static bool IsValidPhoneNumber(string checkNumber)
+        public static ValidationResult<string> IsValidPhoneNumber(string checkNumber)
         {
             if (string.IsNullOrWhiteSpace(checkNumber))
-                return false;
+                return ValidationResult<string>.Failure("Phone number cannot be empty.");
 
             try
             {
                 var phoneUtil = PhoneNumberUtil.GetInstance();
                 var numberProto = phoneUtil.Parse(checkNumber, null);
-                return phoneUtil.IsValidNumber(numberProto);
+                if (phoneUtil.IsValidNumber(numberProto))
+                {
+                    string formattedNumber = phoneUtil.Format(numberProto, PhoneNumberFormat.E164);
+                    return ValidationResult<string>.Success(formattedNumber);
+                }
+                else
+                {
+                    return ValidationResult<string>.Failure($"Invalid number: {checkNumber}");
+                }
             }
-            catch (NumberParseException)
+            catch (NumberParseException ex)
             {
-                return false;
+                return ValidationResult<string>.Failure("Invalid phone number: " + ex.Message);
             }
         }
 
-        public static (bool isValid, string result) IsValidEmail(string checkEmail)
+        public static ValidationResult<string> IsValidEmail(string checkEmail)
         {
             if (string.IsNullOrWhiteSpace(checkEmail))
-                return (false, "Email address cannot be empty.");
+                return ValidationResult<string>.Failure("Email address cannot be empty.");
 
             try
             {
                 var mailAddress = new MailAddress(checkEmail);
-                return (true, mailAddress.Address);
+                return ValidationResult<string>.Success(mailAddress.Address);
             }
             catch (FormatException ex)
             {
-                return (false, ex.Message);
+                return ValidationResult<string>.Failure("Invalid email address: " + ex.Message);
             }
         }
     }

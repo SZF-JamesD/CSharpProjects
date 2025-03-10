@@ -65,7 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressParts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationResult.cs" />
     <Compile Include="ValidationUtil.cs" />
   </ItemGroup>
   <ItemGroup>
