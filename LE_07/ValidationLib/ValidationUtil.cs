@@ -61,13 +61,13 @@ namespace ValidationLib
         }
 
 
-        public static ValidationResult<string> ValidateAnFormatDob(string dob)
+        public static ValidationResult<string> ValidateAndFormatDate(string dob)
         {
             if (string.IsNullOrWhiteSpace(dob))
                 return ValidationResult<string>.Failure("DOB cannot be empty.");
 
             dob = Regex.Replace(dob, @"[-/,_]", ".");
-            var dobPattern = @"^(?!^\s*$)(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.(19[2-9][0-9]|20[0-1][0-9]|202[0-4]$";
+            var dobPattern = @"^(?!^\s*$)(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.(19[2-9][0-9]|20[0-1][0-9]|202[0-4])$";
 
             if (!Regex.IsMatch(dob, dobPattern, RegexOptions.None))
                 return ValidationResult<string>.Failure("Date format is incorrect. Please try again with the format dd.mm.yyyy");
