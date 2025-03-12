@@ -138,7 +138,7 @@ namespace Ex0401.Services
             {
                 Console.Write("Enter event date: ");
                 string eventDateInput = Console.ReadLine()?.Trim();
-                var eventDateValidation = ValidationUtil.ValidateAndFormatDate(eventDateInput);
+                var eventDateValidation = ValidationUtil.ValidateAndFormatDate(eventDateInput, true);
                 if (eventDateValidation.IsValid)
                 {
                     DateTime eventDate = DateTime.Parse(eventDateValidation.Value);

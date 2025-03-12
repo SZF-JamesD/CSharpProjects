@@ -61,13 +61,13 @@ namespace ValidationLib
         }
 
 
-        public static ValidationResult<string> ValidateAndFormatDate(string dob)
+        public static ValidationResult<string> ValidateAndFormatDoB(string dob)
         {
             if (string.IsNullOrWhiteSpace(dob))
                 return ValidationResult<string>.Failure("DOB cannot be empty.");
 
             dob = Regex.Replace(dob, @"[-/,_]", ".");
-            var dobPattern = @"^(?!^\s*$)(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.(19[2-9][0-9]|20[0-1][0-9]|202[0-5])$";
+            var dobPattern = @"^(?!^\s*$)(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.(19[2-9][0-9]|20[0-1][0-9]|202[0-4])$";
 
             if (!Regex.IsMatch(dob, dobPattern, RegexOptions.None))
                 return ValidationResult<string>.Failure("Date format is incorrect. Please try again with the format dd.mm.yyyy");
@@ -84,6 +84,50 @@ namespace ValidationLib
                 {
                     DateTime validatedDob = new DateTime(year, month, day);
                     return ValidationResult<string>.Success(validatedDob.ToString("dd.MM.yyyy"));
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return ValidationResult<string>.Failure("Invalid date (e.g., 30th of February). Please try again.");
+                }
+            }
+            else
+            {
+                return ValidationResult<string>.Failure("Date format is incorrect. Please try again.");
+            }
+        }
+
+
+        public static ValidationResult<string> ValidateAndFormatDate(string inputDate, bool future)
+        {
+            if (string.IsNullOrWhiteSpace(inputDate))
+                return ValidationResult<string>.Failure("Date cannot be empty.");
+
+            inputDate = Regex.Replace(inputDate, @"[-/,_]", ".");
+
+            var datePattern = @"^(?!^\s*$)(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.([0-9]{4})$";
+
+            if (!Regex.IsMatch(inputDate, datePattern, RegexOptions.None))
+                return ValidationResult<string>.Failure("Date format is incorrect. Please try again with the format dd.mm.yyyy");
+
+            var parts = inputDate.Split('.');
+            if (parts.Length != 3)
+                return ValidationResult<string>.Failure("Date format is incorrect. Please try again with the format dd.mm.yyyy");
+
+            if (int.TryParse(parts[0], out int day) &&
+                int.TryParse(parts[1], out int month) &&
+                int.TryParse(parts[2], out int year))
+            {
+                try
+                {
+                    DateTime validatedDate = new DateTime(year, month, day);
+                    if (future)
+                    {
+                        if (validatedDate < DateTime.Today)
+                        {
+                            return ValidationResult<string>.Failure("Date must be in the future.");
+                        }
+                    }
+                    return ValidationResult<string>.Success(validatedDate.ToString("dd.MM.yyyy"));
                 }
                 catch (ArgumentOutOfRangeException)
                 {
