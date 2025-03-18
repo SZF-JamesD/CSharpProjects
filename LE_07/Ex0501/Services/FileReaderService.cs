@@ -8,10 +8,11 @@ namespace Ex0501.Services
 {
     public class FileReaderService
     {
-        public async Task<string> ReadFileWithProgressAsync(string filePath)
+        public async Task<string> ReadFileWithProgressAsync(string fileName)
         {
             StringBuilder fileContent = new StringBuilder();
             CancellationTokenSource cts = new CancellationTokenSource();
+            string filePath = "../../Assets/" + fileName;
 
             Task progressTask = ShowProgressAsync(cts.Token);
 
