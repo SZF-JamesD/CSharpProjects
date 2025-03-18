@@ -34,7 +34,7 @@ namespace Ex0401.Models
                 }
                 formattedParticipants = sb.ToString();
             }
-            return $"Event Name: {Name}\nEvent Location: {Location}\nEvent Date {Date.ToString("dd.MM.YYYY")}\nParticipants: {formattedParticipants}";
+            return $"Event Name: {Name}\nEvent Location: {Location}\nEvent Date {Date:dd.MM.yyyy}\nParticipants: {formattedParticipants}";
         }
     }
 }
