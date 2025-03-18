@@ -21,9 +21,15 @@ namespace Ex0501.Services
                 using (StreamReader reader = new StreamReader(filePath))
                 {
                     string line;
+                    int lineCount = 0;
                     while ((line = await reader.ReadLineAsync()) != null)
                     {
                         fileContent.AppendLine(line);
+                        lineCount++;
+                        if (lineCount % 100 == 0)
+                        {
+                            await Task.Delay(1);
+                        }
                     }
                 }
             }

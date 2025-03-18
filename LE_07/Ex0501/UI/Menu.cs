@@ -36,7 +36,7 @@ namespace Ex0501.UI
                     string choice = Console.ReadLine()?.Trim();
                     if (menuActions.TryGetValue(choice, out Func<Task> action))
                     {
-                        _ = action();
+                        await action();
                     }
                     else
                     {
@@ -66,7 +66,10 @@ namespace Ex0501.UI
             {
                 Console.WriteLine("Starting file read...");
                 string content = await _fileReaderService.ReadFileWithProgressAsync(fileName);
-                Console.WriteLine("File reading completed.");
+                Console.WriteLine("\nFile reading completed.");
+
+                Console.WriteLine("Loading complete. Press any key to display the file content...");
+                Console.ReadKey();
                 Console.WriteLine(content);
             }
             catch (Exception ex)
