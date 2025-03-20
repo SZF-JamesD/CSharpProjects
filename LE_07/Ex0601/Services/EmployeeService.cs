@@ -12,8 +12,10 @@ namespace Ex0601.Services
 
         public async Task<string> AddEmployeeAsync(string nameInput, string ageInput)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
+                await Task.Delay(4000);
+
                 try
                 {
                     var nameValidation = ValidationUtil.IsValidFullName(nameInput);
