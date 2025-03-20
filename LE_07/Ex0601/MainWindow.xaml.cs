@@ -2,6 +2,7 @@
 using Ex0601.ViewModels;
 using System.Windows;
 using System.Windows.Media;
+using System;
 
 
 namespace Ex0601.UI
@@ -16,15 +17,23 @@ namespace Ex0601.UI
             _employeeService = new EmployeeService();
         }
 
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is MainViewModel viewModel)
             {
-                string result = _employeeService.AddEmployee(viewModel.Name, viewModel.Age);
+                try
+                {
+                    string result = await _employeeService.AddEmployeeAsync(viewModel.Name, viewModel.Age);
 
-                viewModel.Message = result;
+                    viewModel.Message = result;
 
-                viewModel.MessageColor = result.StartsWith("Welcome") ? Brushes.Green : Brushes.Red;
+                    viewModel.MessageColor = result.StartsWith("Welcome") ? Brushes.Green : Brushes.Red;
+                }
+                catch (Exception ex)
+                {
+                    viewModel.Message = $"An error has occured: {ex.Message}";
+                    viewModel.MessageColor = Brushes.Red;
+                }
             }
         }
     }

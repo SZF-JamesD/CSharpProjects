@@ -1,6 +1,8 @@
 ﻿using Ex0601.Models;
 using System.Collections.Generic;
 using ValidationLib;
+using System.Threading.Tasks;
+using System;
 
 namespace Ex0601.Services
 {
@@ -8,27 +10,37 @@ namespace Ex0601.Services
     {
         private readonly List<Employee> employees = new List<Employee>();
 
-        public string AddEmployee(string nameInput, string ageInput)
+        public async Task<string> AddEmployeeAsync(string nameInput, string ageInput)
         {
-            var nameValidation = ValidationUtil.IsValidFullName(nameInput);
-            if (!nameValidation.IsValid)
+            return await Task.Run(() =>
             {
-                return nameValidation.ErrorMessage;
-            }
+                try
+                {
+                    var nameValidation = ValidationUtil.IsValidFullName(nameInput);
+                    if (!nameValidation.IsValid)
+                    {
+                        return nameValidation.ErrorMessage;
+                    }
 
-            if (!int.TryParse(ageInput, out int age) || age <= 0)
-            {
-                return "Please enter a valid age";
-            }
+                    if (!int.TryParse(ageInput, out int age) || age <= 0)
+                    {
+                        return "Please enter a valid age";
+                    }
 
-            Employee employee = new Employee
-            {
-                Name = nameValidation.Value,
-                Age = age
-            };
+                    Employee employee = new Employee
+                    {
+                        Name = nameValidation.Value,
+                        Age = age
+                    };
 
-            employees.Add(employee);
-            return $"Welcome, {employee.Name}! Your age is {employee.Age} years.";
+                    employees.Add(employee);
+                    return $"Welcome, {employee.Name}! Your age is {employee.Age} years.";
+                }
+                catch (Exception ex)
+                {
+                    return $"An error occured while adding the employee: {ex.Message}";
+                }
+            });
         }
     }
 }
