@@ -1,5 +1,4 @@
-﻿
-namespace Ex0602.Models
+﻿namespace Ex0602.Models
 {
     internal class Employee
     {

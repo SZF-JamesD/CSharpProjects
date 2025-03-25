@@ -1,17 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Ex0602.Services;
+using Ex0602.UI;
+using DBLib;
+using MySql.Data.MySqlClient;
 
 namespace Ex0602
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+
     public partial class App : Application
     {
+        public MySqlConnection DbConnection { get; set; }
+        public DBService DbService { get; set; }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            InitializeDatabase();
+
+            DbConnection = (MySqlConnection)DBConnection.GetConnection("data_manage_notes");
+            DbConnection.Open();
+
+            DbService = new DBService(DbConnection);
+
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+        }
+
+        private void InitializeDatabase()
+        {
+            try
+            {
+                DBInitializer.CreateDatabaseAndTables();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error during batabase setup: " + ex.Message,
+                    "Fatal Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                Application.Current.Shutdown();
+                return;
+            }
+        }
     }
 }
