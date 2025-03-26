@@ -1,47 +1,19 @@
 ﻿using System.Windows;
 using Ex0602.Services;
+using Ex0602.ViewModels;
 
-namespace Ex0602.UI
+namespace Ex0602.View
 {
     public partial class LoginWindow : Window
     {
-    private readonly EmployeeService employeeService;
+        private readonly EmployeeService employeeService;
 
         public LoginWindow()
         {
             InitializeComponent();
             var app = (App)Application.Current;
-            employeeService = new EmployeeService(app.DbService);
-        }
-
-        private async void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            string employeeIdText = EmployeeIdTextBox.Text.Trim();
-
-            if (string.IsNullOrEmpty(employeeIdText))
-            {
-                MessageBox.Show("Please enter an Employee ID.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (!int.TryParse(employeeIdText, out int id))
-            {
-                MessageBox.Show("Employee ID must be a number.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            bool isValid = await employeeService.ValidateEmployeeIdAsync(id);
-
-            if (isValid)
-            {
-                var mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Invalid Employee ID. Please try again.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            var employeeService = new EmployeeService(app.DbService);
+            DataContext = new LoginViewModel(employeeService);
         }
     }
 }

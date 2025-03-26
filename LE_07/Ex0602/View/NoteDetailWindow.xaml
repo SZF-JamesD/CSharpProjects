@@ -1,4 +1,4 @@
-﻿<Window x:Class="Ex0602.UI.NoteDetailWindow"
+﻿<Window x:Class="Ex0602.View.NoteDetailWindow"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="NoteDetailWindow" Height="350" Width="400">

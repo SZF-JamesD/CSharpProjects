@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Ex0602.Models;
 
-namespace Ex0602.UI
+namespace Ex0602.View
 {
     public partial class NoteDetailWindow : Window
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Ex0602.Services;
-using Ex0602.UI;
+using Ex0602.View;
 using DBLib;
 using MySql.Data.MySqlClient;
 

@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using Ex0602.Models;
-using Ex0602.UI;
 
-namespace Ex0602.UI
+namespace Ex0602.View
 {
     public partial class MainWindow : Window
     {
