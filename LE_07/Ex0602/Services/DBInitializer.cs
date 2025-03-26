@@ -29,7 +29,8 @@ namespace Ex0602.Services
 
                     string createEmployeesTable = @"
                         create table if not exists employees(
-                            employee_id int primary key auto_increment
+                            employee_id int primary key auto_increment,
+                            employee_last_name varchar(50)
                             );";
 
                     using (var cmd = dbConnection.CreateCommand())

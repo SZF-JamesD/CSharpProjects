@@ -95,7 +95,7 @@ namespace Ex0602.Services
 
         protected async Task<List<T>> ExecuteQueryAsync<T>(string sql, Func<MySqlCommand, Task> stmtSetter, Func<MySqlDataReader, T> mapper)
         {
-            List<T> results = new List<T>();
+            var results = new List<T>();
             using (var cmd = new MySqlCommand(sql, _connection))
             {
                 await stmtSetter(cmd);

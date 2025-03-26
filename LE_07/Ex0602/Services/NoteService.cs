@@ -1,49 +1,57 @@
 ﻿using Ex0602.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Ex0602.Services
 {
     internal class NoteService
     {
         private readonly List<Note> notes = new List<Note>();
-
-        public async Task<string> AddNoteAsync(string nameInput, string ageInput)
-        {
-            return await Task.Run(async () =>
+        private readonly DBService DbService;
+        public async Task AddNoteAsync(string content, int employee_id)
+        {       
+            await Task.Delay(2000);
+            try
             {
-                await Task.Delay(4000);
-
-                try
+                if (String.IsNullOrEmpty(content))
                 {
-                    var nameValidation = ValidationUtil.IsValidFullName(nameInput);
-                    if (!nameValidation.IsValid)
-                    {
-                        return nameValidation.ErrorMessage;
-                    }
+                    Console.WriteLine("Note content cannot be empty");
 
-                    if (!int.TryParse(ageInput, out int age) || age <= 0)
-                    {
-                        return "Please enter a valid age";
-                    }
-
-                    Employee employee = new Employee
-                    {
-                        Name = nameValidation.Value,
-                        Age = age
-                    };
-
-                    employees.Add(employee);
-                    return $"Welcome, {employee.Name}! Your age is {employee.Age} years.";
+                    MessageBox.Show("Error: Note content cannot be empty.",
+                    "Note Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                    return;
                 }
-                catch (Exception ex)
+
+                Note note = new Note();
                 {
-                    return $"An error occured while adding the employee: {ex.Message}";
-                }
-            });
+                    note.NoteID = (notes[-1].NoteID + 1);
+                    note.Content = content;
+                    note.DateCreated = DateTime.Now;
+                    note.EmployeeID = employee_id;
+                };
+
+                notes.Add(note);
+                await DbService.AddNoteAsync(content, employee_id);
+                MessageBox.Show("New note added successfully.",
+                    "Success",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+            catch (Exception ex)
+            {   
+                Console.WriteLine($"An error occured while adding the note: {ex.Message}");
+
+                MessageBox.Show($"Error: An error occured while adding the note: {ex.Message}.",
+                    "Note Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
         }
     }
 }

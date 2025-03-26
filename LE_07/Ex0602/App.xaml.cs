@@ -24,8 +24,8 @@ namespace Ex0602
 
             DbService = new DBService(DbConnection);
 
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            var loginWindow = new LoginWindow();
+            loginWindow.Show();
         }
 
         private void InitializeDatabase()
