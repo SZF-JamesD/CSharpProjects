@@ -43,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DialogService.cs" />
-    <Compile Include="Interfaces\IDIalogService.cs" />
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Interfaces\IDialogService.cs" />
+    <Compile Include="AsyncRelayCommand.cs" />
+    <Compile Include="EventAggregator.cs" />
+    <Compile Include="TaskHelper.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

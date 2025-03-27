@@ -4,6 +4,8 @@ using Ex0602.Services;
 using Ex0602.View;
 using DBLib;
 using MySql.Data.MySqlClient;
+using DBService = Ex0602.Services.DBService;
+using DBInitializer = Ex0602.Services.DBInitializer;
 
 namespace Ex0602
 {
