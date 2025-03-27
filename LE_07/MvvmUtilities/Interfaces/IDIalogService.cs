@@ -1,9 +1,9 @@
 ﻿namespace MvvmUtilities.Interfaces
 {
-    public interface IDIalogService
+    public interface IDialogService
     {
-        void ShowMessage(string message, string caption);
-        void ShowError(string message, string caption);
-        bool ShowConfirmation(string message, string caption);
+        void ShowMessage(string message, string caption = "Info");
+        void ShowError(string message, string caption = "Error");
+        bool AskUserConfirmation(string message, string caption = "Confirmation");
     }
 }
