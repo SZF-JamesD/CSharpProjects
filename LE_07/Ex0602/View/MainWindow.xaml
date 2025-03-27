@@ -38,10 +38,10 @@
 
             <Label Grid.Row="1" Grid.Column="0" Content="Add New Note:" VerticalAlignment="Center"/>
             <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding AddNote, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Add" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" RenderTransformOrigin="0.147,-0.053" Width="80"/>
+            <Button Content="Add" Command="{Binding AddNoteCommand}" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" RenderTransformOrigin="0.147,-0.053" Width="80"/>
 
             <Label Grid.Row="4" Grid.Column="0" Content="Delete Selected Note:" VerticalAlignment="Center" Margin="0,50,0,0"/>
-            <Button Content="Delete" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Width="80" Padding="1,1,1,1"/>
+            <Button Content="Delete" Command="{Binding DeleteNoteCommand}" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Width="80" Padding="1,1,1,1"/>
 
         </Grid>
 
@@ -59,12 +59,16 @@
             <Label Grid.Row="0" Grid.Column="0" Content="Notes"/>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
-                <ListView x:Name="NotesListView" MouseDoubleClick="NotesListView_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=500}">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                <ListView x:Name="NotesListView" MouseDoubleClick="NotesListView_MouseDoubleClick" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DateCreated, StringFormat='{}{0:d}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Employee: " FontWeight="Bold" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding EmployeeID}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </ScrollViewer>
         </Grid>

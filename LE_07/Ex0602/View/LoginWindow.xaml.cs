@@ -6,8 +6,6 @@ namespace Ex0602.View
 {
     public partial class LoginWindow : Window
     {
-        private readonly EmployeeService employeeService;
-
         public LoginWindow()
         {
             InitializeComponent();

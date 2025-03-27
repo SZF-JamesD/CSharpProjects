@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Ex0602.Models;
+using Ex0602.ViewModels;
 
 namespace Ex0602.View
 {
@@ -8,7 +9,7 @@ namespace Ex0602.View
         public NoteDetailWindow(Note note)
         {
             InitializeComponent();
-            DataContext = note;
+            DataContext = new NoteDetailViewModel(note);
         }
     }
 }

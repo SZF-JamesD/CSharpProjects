@@ -43,7 +43,7 @@ namespace Ex0602.Services
                         create table if not exists notes(
                             note_id int primary key auto_increment,
                             content varchar(255) not null,
-                            date_created datetime not null current_timestamp,
+                            date_created datetime not null default current_timestamp,
                             employee_id int not null,
                             foreign key (employee_id) references employees(employee_id)
                             );";

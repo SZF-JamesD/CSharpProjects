@@ -21,7 +21,7 @@ namespace Ex0602.Services
 
         public async Task<bool> EmployeeExistsAsync(int employeeId)
         {
-            string sql = "select count(*) from emyploees where employee_id = @id";
+            string sql = "select count(*) from employees where employee_id = @id";
             int count = await ExecuteScalarAsync<int>(sql, async cmd =>
             {
                 cmd.Parameters.AddWithValue("@id", employeeId);

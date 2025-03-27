@@ -12,6 +12,9 @@ namespace Ex0602
     {
         public MySqlConnection DbConnection { get; set; }
         public DBService DbService { get; set; }
+        public NoteService NoteService { get; set; }
+
+        public int LoggedEmployeeId { get; set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -23,6 +26,7 @@ namespace Ex0602
             DbConnection.Open();
 
             DbService = new DBService(DbConnection);
+            NoteService = new NoteService(DbService);
 
             var loginWindow = new LoginWindow();
             loginWindow.Show();
@@ -42,6 +46,17 @@ namespace Ex0602
                     MessageBoxImage.Error);
                 Application.Current.Shutdown();
                 return;
+            }
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            if (DbConnection != null)
+            {
+                DbConnection.Close();
+                DbConnection.Dispose();
             }
         }
     }

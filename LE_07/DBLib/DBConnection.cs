@@ -13,7 +13,7 @@ namespace DBLib
         {
             try
             {
-                string configPath = Environment.GetEnvironmentVariable("DB_CONFIG_PATH") ?? "../../dbconfig.json";
+                string configPath = Environment.GetEnvironmentVariable("DB_CONFIG_PATH") ?? "../../../../dbconfig.json";
 
                 if (!File.Exists(configPath))
                 {

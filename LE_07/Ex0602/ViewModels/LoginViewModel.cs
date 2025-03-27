@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ex0602.Services;
+using Ex0602.View;
+using System.Linq;
 
 namespace Ex0602.ViewModels
 {
@@ -23,7 +25,7 @@ namespace Ex0602.ViewModels
                 {
                     _employeeId = value;
                     OnPropertyChanged(nameof(EmployeeId));
-
+                    ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -54,12 +56,26 @@ namespace Ex0602.ViewModels
             if (isValid)
             {
                 MessageBox.Show("Login successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var mainWindow = new MainWindow();
+                    var app = (App)Application.Current;
+                    app.LoggedEmployeeId = id;
+                    mainWindow.Show();
+
+                    var loginWindow = Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault();
+                    loginWindow?.Close();
+            
+                    
+                });
             }
             else
             {
                 MessageBox.Show("Invalid Employee ID. Please try again.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         protected void OnPropertyChanged(string propertyName)
         {
@@ -84,7 +100,14 @@ namespace Ex0602.ViewModels
 
         public async void Execute(object parameter)
         {
-            await _execute();
+            try
+            {
+                await _execute();  // Ensure proper async execution
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Execution Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void RaiseCanExecuteChanged()
