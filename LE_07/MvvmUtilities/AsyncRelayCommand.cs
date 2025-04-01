@@ -13,10 +13,11 @@ namespace MvvmUtilities
 
         public event EventHandler CanExecuteChanged;
 
-        public AsyncRelayCommand(Func<T, Task> execute, Func<T, bool> canExecute = null)
+        public AsyncRelayCommand(Func<T, Task> execute, Func<T, bool> canExecute = null, DialogService dialogService = null)
         {
             _execute = execute ?? throw new ArgumentException(nameof(execute));
             _canExecute = canExecute;
+            _dialogService = dialogService;
         }
 
         

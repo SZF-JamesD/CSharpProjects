@@ -28,18 +28,30 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
 
+            <Label Grid.Row="0" Grid.Column="0" Content="Customer Name:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding CustomerName, UpdateSourceTrigger=PropertyChanged}"/>
 
 
-            <Label Grid.Row="1" Grid.Column="0" Content="Add New Note:" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding AddNote, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Add" Command="{Binding AddNoteCommand}" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" RenderTransformOrigin="0.147,-0.053" Width="80"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Customer Number:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding CustomerNumber, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Label Grid.Row="4" Grid.Column="0" Content="Delete Selected Note:" VerticalAlignment="Center" Margin="0,50,0,0"/>
-            <Button Content="Delete" Command="{Binding DeleteNoteCommand}" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Width="80" Padding="1,1,1,1"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Product Name:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="5" Grid.Column="0" Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="6" Grid.Column="0" Content="Product Price:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="7" Grid.Column="0" Text="{Binding ProductPrice, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="8" Grid.Column="0" Content="Quantity:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="9" Grid.Column="0" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button Content="Create Invoice" Command="{Binding CreateInvoiceCommand}" Grid.Row="10" Grid.Column="0" Width="120" Height="35" Margin="5"/>
 
         </Grid>
 
@@ -61,17 +73,15 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding DateCreated, StringFormat='{}{0:d}'}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Employee: " FontWeight="Bold" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding EmployeeID}"/>
+                                <TextBlock Text="{Binding InvoiceDate, StringFormat='{}{0:d}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Customer: " FontWeight="Bold" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding Customer.CustomerNumber}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollViewer>
         </Grid>
-
-
     </Grid>
 </UserControl>
 

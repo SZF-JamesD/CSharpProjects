@@ -9,10 +9,9 @@ namespace Ex0603.Views
     /// </summary>
     public partial class InvoiceView : Window
     {
-        public InvoiceView(Invoice invoice)
+        public InvoiceView()
         {
             InitializeComponent();
-            DataContext = new InvoiceViewModel(invoice);
         }
     }
 }
