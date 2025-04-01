@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace MvvmUtilities
 {
-    internal class AsyncRelayCommand<T> : ICommand
+    public class AsyncRelayCommand<T> : ICommand
     {
         private readonly DialogService _dialogService;
         private readonly Func<T, Task> _execute;

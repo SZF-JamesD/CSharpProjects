@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ex0603.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for InvoiceView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class InvoiceView : Window
     {
-        public MainWindow()
+        public InvoiceView()
         {
             InitializeComponent();
         }
