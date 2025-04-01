@@ -1,6 +1,6 @@
 ﻿namespace Ex0603.Models
 {
-    internal class Product
+    public class Product
     {
         public string ProductName { get; set; }
         public decimal Price { get; set; }

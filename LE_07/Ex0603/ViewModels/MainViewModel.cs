@@ -23,16 +23,21 @@
         }
     }
 }*/
+using Ex0603.Models;
 using Ex0603.Services;
 using Ex0603.Views;
 using MvvmUtilities;
 using MvvmUtilities.Interfaces;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Ex0603.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
+        private readonly InvoiceService _invoiceService;
+        public ObservableCollection<Invoice> Invoices { get; set; } = new ObservableCollection<Invoice>();
         private object _currentView;
         public object CurrentView
         {
@@ -55,13 +60,23 @@ namespace Ex0603.ViewModels
 
             ShowLoginViewCommand = new RelayCommand(() =>
                 CurrentView = new LoginViewModel(_authenticationService, _dialogService, OnLoginSuccess));
-            ShowInvoiceViewCommand = new RelayCommand(() =>
-                CurrentView = new InvoiceViewModel());
         }
 
         private void OnLoginSuccess()
         {
             CurrentView = new MainView();
+            LoadInvoices();
+        }
+
+        private void LoadInvoices()
+        {
+            var invoiceList = _invoiceService.LoadInvoices();
+            Invoices.Clear();
+            foreach (var invoice in invoiceList)
+            {
+                Invoices.Add(invoice);
+            }
+            
         }
     }
 }

@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Ex0602.Models;
+using System;
 using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Ex0602.Models;
-using Ex0602.Services;
 
 namespace Ex0602.ViewModels
 {

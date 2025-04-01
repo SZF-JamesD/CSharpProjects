@@ -1,14 +1,47 @@
-﻿namespace Ex0603.Models
+﻿using System.Collections.Generic;
+
+namespace Ex0603.Models
 {
-    internal class Customer
+    public class Customer
     {
         public string CustomerName { get; set; }
-        public string CustomerNumber { get; set; } //must start with KU-
+        public string CustomerNumber { get; }
+
+        private static readonly Dictionary<string, Customer> _customerRegistry = new Dictionary<string, Customer>();
+        private static int _customerCounter = 0;
 
         public Customer(string customerName, string customerNumber)
         {
             CustomerName = customerName;
             CustomerNumber = customerNumber;
+        }
+
+        public static Customer GetOrCreateCustomer(string customerName, string customerNumber = null)
+        {
+            if (_customerRegistry.TryGetValue(customerName, out Customer existingCustomer))
+            {
+                return existingCustomer;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(customerNumber))
+                {
+                    _customerCounter++;
+                    customerNumber = $"KU-{_customerCounter:D4}";
+                }
+                else
+                {
+                    string numPart = customerNumber.Replace("KU-", "");
+                    if (int.TryParse(numPart, out int parsedNum))
+                    {
+                        if (parsedNum > _customerCounter)
+                            _customerCounter = parsedNum;
+                    }
+                }
+                var newCustomer = new Customer(customerName, customerNumber);
+                _customerRegistry[customerName] = newCustomer;
+                return newCustomer;
+            }
         }
     }
 }

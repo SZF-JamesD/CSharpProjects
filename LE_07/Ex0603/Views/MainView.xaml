@@ -5,9 +5,73 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <TextBlock Text="Welcome to the Main View!" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    
+    <Grid Background="White" Margin="20,20,20,20">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" Content="Invoice Manager" FontSize="24" UseLayoutRounding="False"/>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+
+
+            <Label Grid.Row="1" Grid.Column="0" Content="Add New Note:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding AddNote, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Add" Command="{Binding AddNoteCommand}" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" RenderTransformOrigin="0.147,-0.053" Width="80"/>
+
+            <Label Grid.Row="4" Grid.Column="0" Content="Delete Selected Note:" VerticalAlignment="Center" Margin="0,50,0,0"/>
+            <Button Content="Delete" Command="{Binding DeleteNoteCommand}" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Width="80" Padding="1,1,1,1"/>
+
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Invoices"/>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
+                <ListView x:Name="InvoiceListView" MouseDoubleClick="InvoiceListView_MouseDoubleClick" ItemsSource="{Binding Invoices}" SelectedItem="{Binding SelectedInvoice, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DateCreated, StringFormat='{}{0:d}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Employee: " FontWeight="Bold" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding EmployeeID}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+
+
     </Grid>
 </UserControl>
 

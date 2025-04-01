@@ -2,7 +2,7 @@
 
 namespace Ex0603.Models
 {
-    internal class Invoice
+    public class Invoice
     {
         public string CompanyName { get; } = "WPFBau";
         public Customer Customer { get; set; }
@@ -43,7 +43,7 @@ namespace Ex0603.Models
             decimal price = decimal.Parse(lines[2].Split(new[] { "Unit Price: " }, StringSplitOptions.None)[1].Replace("€", "").Trim());
             DateTime date = DateTime.Parse(lines[4].Split(new[] { "Date: " }, StringSplitOptions.None)[1]);
 
-            var customer = new Customer(customerName, customerNumber);
+            var customer = Customer.GetOrCreateCustomer(customerName, customerNumber);
             var product = new Product(productName, price);
 
             return new Invoice(customer, product, quantity) { InvoiceDate = date };
