@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.IO;
-using Ex0603.Models;
+﻿using Ex0603.Models;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Ex0603.Services
 {

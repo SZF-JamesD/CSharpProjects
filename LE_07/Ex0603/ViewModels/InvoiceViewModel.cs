@@ -1,10 +1,5 @@
 ﻿using Ex0603.Models;
 using MvvmUtilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex0603.ViewModels
 {
