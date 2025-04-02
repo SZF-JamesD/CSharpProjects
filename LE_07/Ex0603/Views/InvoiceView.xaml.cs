@@ -4,14 +4,12 @@ using System.Windows;
 
 namespace Ex0603.Views
 {
-    /// <summary>
-    /// Interaction logic for InvoiceView.xaml
-    /// </summary>
     public partial class InvoiceView : Window
     {
-        public InvoiceView()
+        public InvoiceView(Invoice invoice)
         {
             InitializeComponent();
+            DataContext = new InvoiceViewModel(invoice);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Ex0603.Services;
-using Ex0603.ViewModels;
-using MvvmUtilities;
+﻿using Ex0603.Views;
 using System.Windows;
 
 namespace Ex0603
@@ -11,17 +9,9 @@ namespace Ex0603
         {
             base.OnStartup(e);
 
-            var authenticationService = new AuthenticationService();
-            var dialogService = new DialogService();
+            var loginWindow = new LoginView();
 
-            var mainViewModel = new MainViewModel(authenticationService, dialogService);
-
-            var mainWindow = new MainWindow
-            {
-                DataContext = mainViewModel
-            };
-
-            mainWindow.Show();
+            loginWindow.Show();
         }
     }
 }

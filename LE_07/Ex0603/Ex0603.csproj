@@ -56,7 +56,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\AuthenticationService.cs" />
-    <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

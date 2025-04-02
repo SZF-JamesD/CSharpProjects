@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ex0603.ViewModels
 {
-    internal class InvoiceViewModel : ViewModelBase
+    public class InvoiceViewModel : ViewModelBase
     {
         private Invoice _invoice;
 

@@ -1,6 +1,6 @@
 ﻿namespace Ex0603.Services
 {
-    internal class AuthenticationService
+    public class AuthenticationService
     {
         private readonly string _validUsername = "admin12321";
         private readonly string _validPassword = "password65456";

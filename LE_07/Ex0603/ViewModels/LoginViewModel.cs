@@ -1,26 +1,27 @@
 ﻿using Ex0603.Services;
+using Ex0603.Views;
 using MvvmUtilities;
 using MvvmUtilities.Interfaces;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Ex0603.ViewModels
 {
-    internal class LoginViewModel : ViewModelBase
+    public class LoginViewModel : ViewModelBase
     {
         private string _username;
         private string _password;
         private readonly AuthenticationService _authenticationService;
         private readonly IDialogService _dialogService;
-        private readonly System.Action _loginSuccessCallback; 
 
         public ICommand LoginCommand { get; }
 
-        public LoginViewModel(AuthenticationService authenticationService, IDialogService dialogService, System.Action loginSuccessCallback)
+        public LoginViewModel(AuthenticationService authenticationService, IDialogService dialogService)
         {
             _authenticationService = authenticationService;
             _dialogService = dialogService;
-            _loginSuccessCallback = loginSuccessCallback;
-            LoginCommand = new RelayCommand<object>(_ => ExecuteLogin());
+            LoginCommand = new RelayCommand(ExecuteLogin);
         }
 
         public string Username
@@ -41,7 +42,17 @@ namespace Ex0603.ViewModels
             {
                 _dialogService.ShowMessage("Login Successful!", "Success");
 
-                _loginSuccessCallback?.Invoke();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var mainWindow = new MainWindow();
+                    var app = (App)Application.Current;
+                    mainWindow.Show();
+
+                    var loginWindow = Application.Current.Windows.OfType<LoginView>().FirstOrDefault();
+                    loginWindow?.Close();
+
+
+                });
             }
             else
             {

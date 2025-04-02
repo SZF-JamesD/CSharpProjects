@@ -1,17 +1,15 @@
 ﻿using Ex0603.Models;
 using Ex0603.Services;
+using Ex0603.Views;
 using MvvmUtilities;
 using MvvmUtilities.Interfaces;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using System.Windows;
-using System.Linq;
 using System.Threading.Tasks;
-using Ex0603.Views;
+using System.Windows.Input;
 
 namespace Ex0603.ViewModels
 {
-    internal class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         private readonly AuthenticationService _authenticationService;
         private readonly IDialogService _dialogService;
@@ -66,28 +64,30 @@ namespace Ex0603.ViewModels
             set => SetProperty(ref _quantity, value);
         }
 
-
+        private Invoice _selectedInvoice;
+        public Invoice SelectedInvoice
+        {
+            get => _selectedInvoice;
+            set
+            {
+                _selectedInvoice = value;
+                OnPropertyChanged(nameof(SelectedInvoice));
+            }
+        }
 
         public MainViewModel(AuthenticationService authenticationService, IDialogService dialogService)
         {
             _authenticationService = authenticationService;
             _dialogService = dialogService;
-            _invoiceService = new InvoiceService("/../../Data/");
+            _invoiceService = new InvoiceService("../../Data/");
 
-            CurrentView = new LoginViewModel(_authenticationService, _dialogService, OnLoginSuccess);
-
-            ShowLoginViewCommand = new RelayCommand(() => CurrentView = new LoginViewModel(_authenticationService, _dialogService, OnLoginSuccess));
             CreateInvoiceCommand = new RelayCommand(CreateInvoice);
             OpenInvoiceCommand = new RelayCommand<Invoice>(OpenInvoice);
+            LoadInvoices();
 
             System.Windows.Application.Current.Exit += async (s, e) => await SaveInvoices();
         }
 
-        private void OnLoginSuccess()
-        {
-            CurrentView = new MainView();
-            LoadInvoices();
-        }
 
         private void LoadInvoices()
         {
@@ -101,9 +101,9 @@ namespace Ex0603.ViewModels
         
         private void CreateInvoice()
         {
-            if (string.IsNullOrWhiteSpace(CustomerName) || string.IsNullOrWhiteSpace(ProductName) || string.IsNullOrWhiteSpace(ProductPrice) || string.IsNullOrWhiteSpace(Quantity))
+            if (string.IsNullOrWhiteSpace(ProductName) || string.IsNullOrWhiteSpace(ProductPrice) || string.IsNullOrWhiteSpace(Quantity))
             {
-                _dialogService.ShowError("All Fields must be Filled!", "Missing Information");
+                _dialogService.ShowError("Product Name, Price, and Quantity Fields must be Filled!", "Missing Information");
                 return;
             }
 
@@ -132,7 +132,7 @@ namespace Ex0603.ViewModels
             if (selectedInvoice == null) return;
             
             var invoiceViewModel = new InvoiceViewModel(selectedInvoice);
-            var invoiceWindow = new InvoiceView()
+            var invoiceWindow = new InvoiceView(_selectedInvoice)
             {
                 DataContext = invoiceViewModel
             };
@@ -140,7 +140,7 @@ namespace Ex0603.ViewModels
             invoiceWindow.Show();
         }
 
-        private async Task SaveInvoices()
+        public async Task SaveInvoices()
         {
             foreach (var invoice in Invoices)
             {

@@ -1,0 +1,5 @@
+WPFBau
+Invoice for Paul (Customer No: KU-002)
+Product: Log	Quantity: 14	Unit Price: €13
+Total Price (incl. VAT): 218,40 €
+Date: 2025-04-02  11:49:11

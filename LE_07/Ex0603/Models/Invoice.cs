@@ -27,7 +27,7 @@ namespace Ex0603.Models
 
         public override string ToString()
         {
-            return $"{CompanyName}\n\nInvoice for {Customer.CustomerName} (Customer No: {Customer.CustomerNumber})\nProduct: {Product.ProductName}\tQuantity: {Quantity}\tUnit Price: €{Product.Price}\n" +
+            return $"{CompanyName}\nInvoice for {Customer.CustomerName} (Customer No: {Customer.CustomerNumber})\nProduct: {Product.ProductName}\tQuantity: {Quantity}\tUnit Price: €{Product.Price}\n" +
                 $"Total Price (incl. VAT): {TotalPrice:C}\nDate: {InvoiceDate:yyyy-MM-dd  HH:mm:ss}\n";
         }
 

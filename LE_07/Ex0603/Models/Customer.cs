@@ -16,8 +16,19 @@ namespace Ex0603.Models
             CustomerNumber = customerNumber;
         }
 
-        public static Customer GetOrCreateCustomer(string customerName, string customerNumber = null)
+        public static Customer GetOrCreateCustomer(string customerName = null, string customerNumber = null)
         {
+            if (string.IsNullOrWhiteSpace(customerName) && !string.IsNullOrWhiteSpace(customerNumber))
+            {
+                foreach (var customer in _customerRegistry.Values)
+                {
+                    if (customer.CustomerNumber == customerNumber)
+                    {
+                        return customer;
+                    }
+                }
+                return null;
+            }
             if (_customerRegistry.TryGetValue(customerName, out Customer existingCustomer))
             {
                 return existingCustomer;

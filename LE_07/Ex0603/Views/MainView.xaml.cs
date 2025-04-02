@@ -16,7 +16,7 @@ namespace Ex0603.Views
         {
             if (InvoiceListView.SelectedItem is Invoice selectedInvoice)
             {
-                InvoiceView detailWindow = new InvoiceView();
+                InvoiceView detailWindow = new InvoiceView(selectedInvoice);
                 detailWindow.Show();
             }
         }

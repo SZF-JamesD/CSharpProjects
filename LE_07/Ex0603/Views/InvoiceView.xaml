@@ -13,7 +13,7 @@
             <TextBlock Text="Title:" FontWeight="Bold" FontSize="14"/>
             <TextBlock Text="{Binding Title}" Margin="0,0,0,10" FontSize="14"/>
             <TextBlock Text="Details: " FontWeight="Bold" FontSize="14"/>
-            <TextBlock Text="{Binding Details}" TextWrapping="Wrap" FontSize="14" Margin="0,5,0,0"/>
+            <TextBlock Text="{Binding Content}" TextWrapping="Wrap" FontSize="14" Margin="0,5,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

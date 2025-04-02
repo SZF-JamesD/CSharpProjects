@@ -1,7 +1,7 @@
 ﻿using Ex0603.Services;
 using Ex0603.ViewModels;
-using MvvmUtilities;
 using System.Windows;
+using MvvmUtilities;
 
 namespace Ex0603
 {
