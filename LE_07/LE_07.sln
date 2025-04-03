@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmUtilities", "MvvmUtilit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex0603", "Ex0603\Ex0603.csproj", "{452E53E7-C4E8-404B-BD32-2C37F6F3A798}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex0701", "Ex0701\Ex0701.csproj", "{04B3CBD5-D26B-4C06-8CDA-5051BD98AD57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{452E53E7-C4E8-404B-BD32-2C37F6F3A798}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{452E53E7-C4E8-404B-BD32-2C37F6F3A798}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{452E53E7-C4E8-404B-BD32-2C37F6F3A798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04B3CBD5-D26B-4C06-8CDA-5051BD98AD57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04B3CBD5-D26B-4C06-8CDA-5051BD98AD57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04B3CBD5-D26B-4C06-8CDA-5051BD98AD57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04B3CBD5-D26B-4C06-8CDA-5051BD98AD57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
