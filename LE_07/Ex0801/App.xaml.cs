@@ -10,6 +10,7 @@ using MvvmUtilities.Interfaces;
 using Ex0801.Interfaces;
 using System.Collections.ObjectModel;
 using Ex0801.Models;
+using System.Data.Common;
 
 namespace Ex0801
 {
@@ -69,7 +70,7 @@ namespace Ex0801
             
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<System.Data.Common.DbConnection>(provider => DBConnection.GetConnection());
+            services.AddTransient<Func<DbConnection>>(_ => () => DBConnection.GetConnection());
             services.AddTransient<DBService>();
 
             services.AddSingleton<IDialogService, DialogService>();

@@ -9,15 +9,19 @@ namespace DBLib
 {
     public class DBService
     {
-        private readonly DbConnection _connection;
+        private readonly Func<DbConnection> _connectionFactory;
 
-        public DBService(DbConnection connection)
+        public DBService(Func<DbConnection> connectionFactory)
         {
-            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            if (_connection.State != System.Data.ConnectionState.Open)
-            {
-                throw new InvalidOperationException("Connection must be open");
-            }
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+        }
+
+        private DbConnection GetOPenConnection()
+        {
+            var conn = _connectionFactory();
+            if (conn.State != System.Data.ConnectionState.Open)
+                conn.Open();
+            return conn;
         }
 
         public async Task<int> AddAsync(string tableName, Dictionary<string, object> data)
@@ -27,14 +31,13 @@ namespace DBLib
 
             var columns = string.Join(", ", data.Keys);
             var values = string.Join(", ", data.Keys.Select(p => $"@{p}"));
-
             var sql = $"INSERT INTO {tableName} ({columns}) VALUES ({values}); SELECT LAST_INSERT_ID();";
 
             return await ExecuteScalarAsync<int>(sql, cmd =>
             {
                 foreach (var pair in data)
                 {
-                    cmd.Parameters.AddWithValue($"@{pair.Key}", pair.Value);
+                    cmd.Parameters.AddWithValue($"@{pair.Key}", pair.Value ?? DBNull.Value);
                 }
             });
         }
@@ -49,40 +52,17 @@ namespace DBLib
             return rowsAffected > 0;
         }
 
-        public async Task<Dictionary<string, object>> GetOneAsync(string tableName, string keyColumn, object keyValue)
+
+        public async Task<List<T>> GetAsync<T>(string sql, Dictionary<string, object> parameters, Func<MySqlDataReader, T> mapper)
         {
-            var sql = $"SELECT * FROM {tableName} WHERE {keyColumn} = @value LIMIT 1";
-
-            var result = await ExecuteQueryAsync(sql, cmd =>
+            return await ExecuteQueryAsync(sql, cmd =>
             {
-                cmd.Parameters.AddWithValue("@value", keyValue);
-            },
-            reader =>
-            {
-                var dict = new Dictionary<string, object>();
-                for (int i = 0; i < reader.FieldCount; i++)
+                foreach (var pair in parameters)
                 {
-                    dict[reader.GetName(i)] = reader.GetValue(i);
+                    cmd.Parameters.AddWithValue($"@{pair.Key}", pair.Value ?? DBNull.Value);
                 }
-                return dict;
-            });
-            return result.Count > 0 ? result[0] : null;
-        }
-
-        public async Task<List<Dictionary<string, object>>> GetAllAsync(string tableName)
-        {
-            var sql = $"SELECT * FROM {tableName}";
-
-            return await ExecuteQueryAsync(sql, cmd => { }, reader =>
-            {
-                var dict = new Dictionary<string, object>();
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    dict[reader.GetName(i)] = reader.GetValue(i);
-                }
-                return dict;
-            });
-        }
+            }, mapper);
+        } //refactored to just one method, for one result just need to call FirstOrDefault();
 
         public async Task<Dictionary<string, object>> UpdateAsync(string tableName, Dictionary<string, object> data, string whereClause, Dictionary<string, object> whereParameters)
         { 
@@ -128,21 +108,10 @@ namespace DBLib
             return updated.FirstOrDefault();
         }
 
-
-        public void Close()
-        {
-            if (_connection.State != System.Data.ConnectionState.Closed) _connection.Close();
-        }
-
-        public void Dispose()
-        {
-            Close();
-            _connection.Dispose();
-        }
-
         private async Task<int> ExecuteNonQueryAsync(string sql, Action<MySqlCommand> paramSetter)
         {
-            using (var cmd = new MySqlCommand(sql, (MySqlConnection)_connection))
+            using (var connection = GetOPenConnection())
+            using (var cmd = new MySqlCommand(sql, (MySqlConnection)connection))
             {
                 paramSetter(cmd);
                 return await cmd.ExecuteNonQueryAsync();
@@ -151,7 +120,8 @@ namespace DBLib
 
         private async Task<T> ExecuteScalarAsync<T>(string sql, Action<MySqlCommand> paramSetter)
         {
-            using (var cmd = new MySqlCommand(sql, (MySqlConnection)_connection))
+            using (var connection = GetOPenConnection())
+            using (var cmd = new MySqlCommand(sql, (MySqlConnection)connection))
             {
                 paramSetter(cmd);
                 object result = await cmd.ExecuteScalarAsync();
@@ -162,7 +132,8 @@ namespace DBLib
         private async Task<List<T>> ExecuteQueryAsync<T>(string sql, Action<MySqlCommand> paramSetter, Func<MySqlDataReader, T> mapper)
         {
             var results = new List<T>();
-            using (var cmd = new MySqlCommand(sql, (MySqlConnection)_connection))
+            using (var connection = GetOPenConnection())
+            using (var cmd = new MySqlCommand(sql, (MySqlConnection)connection))
             {
                 paramSetter(cmd);
                 using (var reader = await cmd.ExecuteReaderAsync())

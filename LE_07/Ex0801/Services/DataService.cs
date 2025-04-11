@@ -7,6 +7,7 @@ using Ex0801.Models;
 using MvvmUtilities;
 using Ex0801.Interfaces;
 using MvvmUtilities.Interfaces;
+using System.Windows.Controls;
 
 namespace Ex0801.Services
 {
@@ -25,15 +26,16 @@ namespace Ex0801.Services
         {
             try
             {
-                var tableName = "users";
-                var keyColumn = "username and password";
-                var keyValue = username + " and " + password;
-
-                if (await _dbService.GetOneAsync(tableName, keyColumn, keyValue) != null)
+                var sql = "select count(1) from users where username = username and password = password";
+                var parameters = new Dictionary<string, object>
                 {
-                    return true;
-                }
-                return false;
+                    {"username", username },
+                    {"password", password }
+                };
+                
+                var results = await _dbService.GetAsync<int>(sql, parameters, reader => reader.GetInt32(0));
+
+                return results.FirstOrDefault() > 0;
             }
             catch (NullReferenceException ex) 
             {
@@ -43,19 +45,33 @@ namespace Ex0801.Services
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            var dbName = "customers";
+            var sql = "select * from customers";
+            var parameters = new Dictionary<string, object>();
 
-            var data = await _dbService.GetAllAsync(dbName);
+            var customers = await _dbService.GetAsync<Customer>(sql, parameters, reader =>
+            {
+                var customerDict = new Dictionary<string, object>();
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    customerDict[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                }
 
-            return data.Select(dict => Customer.FromDict(dict));
+                return Customer.FromDict(customerDict);
+            });
+
+            return customers;
         }
 
         public async Task<int> AddNewUserAsync(string username, string password)
         {
             var tableName = "users";
 
-            var existingUser = await _dbService.GetOneAsync("users", "username", username);
-            if (existingUser != null)
+            var existingUser = await _dbService.GetAsync<int>("select * from users wehre username = @username",
+                new Dictionary<string, object> { {"username", username } },
+                reader => Convert.ToInt32(reader["Count(*)"])
+                );
+
+            if (existingUser.FirstOrDefault() > 0)
             {
                 throw new InvalidOperationException("A user with this username already exists.");
             }
@@ -72,8 +88,12 @@ namespace Ex0801.Services
 
         public async Task<int> AddNewCustomerAsync(Customer customer)
         {
-            var existingCustomer = await _dbService.GetOneAsync("customers", "email", customer.Email);
-            if (existingCustomer != null)
+            var existingCustomer = await _dbService.GetAsync<int>("select from customers where email = @email",
+                new Dictionary<string, object> { {"email", customer.Email} },
+                reader => Convert.ToInt32(reader["count(*)"])
+                );
+
+            if (existingCustomer.FirstOrDefault() > 0)
             {
                 throw new InvalidOperationException("A customer with this email already exists.");
             }
