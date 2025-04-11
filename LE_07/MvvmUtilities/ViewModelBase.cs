@@ -17,7 +17,6 @@ namespace MvvmUtilities
             field = value;
             OnPropertyChanged(propertyName);
             return true;
-        }
-        
+        }       
     }
 }

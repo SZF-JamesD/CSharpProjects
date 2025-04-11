@@ -102,7 +102,7 @@ namespace Ex0602.ViewModels
         {
             try
             {
-                await _execute();  // Ensure proper async execution
+                await _execute();
             }
             catch (Exception ex)
             {

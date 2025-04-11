@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="Ex0801.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ex0801.Views"
+             mc:Ignorable="d" >
+    <Grid Background="White">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.35*"/>
+            <ColumnDefinition Width="0.65*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" Content="Gold Digger Customer Managment" FontSize="24" UseLayoutRounding="False"/>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+
+            </Grid.RowDefinitions>
+
+            <Button Content="Add a new Customer" Command="{Binding ToAddCustomerCommand}" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Width="120" Padding="1,1,1,1" Margin="5,5,5,5"/>
+            <Button Content="Edit a Customer" Command="{Binding ToEditCustomerCommand}" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" RenderTransformOrigin="0.147,-0.053" Width="120" Padding="1,1,1,1" Margin="5,5,5,5"/>
+            <Button Content="Delete a Customer" Command="{Binding DeleteCustomerCommand}" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" RenderTransformOrigin="0.147,-0.053" Width="120" Padding="1,1,1,1" Margin="5,5,5,5"/>
+            <Button Content="Exit" Command="{Binding ExitCommand}" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Width="120" Margin="0,50,0,20"/>
+        </Grid>
+
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Customers"/>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" Margin="0, 0, 1 ,5">
+                <ListView x:Name="CustomerListView" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CustId, StringFormat='{}{0:d}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding LastName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+
+    </Grid>
+</UserControl>

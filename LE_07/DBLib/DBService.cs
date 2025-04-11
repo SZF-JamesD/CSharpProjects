@@ -1,10 +1,9 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Data.Common;
-using MySql.Data.MySqlClient;
 using System.Linq;
-using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace DBLib
 {
@@ -29,7 +28,7 @@ namespace DBLib
             var columns = string.Join(", ", data.Keys);
             var values = string.Join(", ", data.Keys.Select(p => $"@{p}"));
 
-            var sql = $"INSERT INTO {tableName} ({columns}) VALUES {values}; SELECT LAST_INSERT_ID();";
+            var sql = $"INSERT INTO {tableName} ({columns}) VALUES ({values}); SELECT LAST_INSERT_ID();";
 
             return await ExecuteScalarAsync<int>(sql, cmd =>
             {
@@ -84,6 +83,51 @@ namespace DBLib
                 return dict;
             });
         }
+
+        public async Task<Dictionary<string, object>> UpdateAsync(string tableName, Dictionary<string, object> data, string whereClause, Dictionary<string, object> whereParameters)
+        { 
+            if (string.IsNullOrWhiteSpace(tableName)) throw new ArgumentException("Table name cannot be null or empty.");
+            if (data == null || data.Count == 0) throw new ArgumentException("Data cannot be null or empty.");
+            if (string.IsNullOrWhiteSpace(whereClause)) throw new ArgumentException("WHERE clause cannot be null or empty.");
+
+            var setClause = string.Join(", ", data.Keys.Select(k => $"{k} = @{k}"));
+
+            var sql = $"UPDATE {tableName} SET {setClause} WHERE {whereClause}";
+
+            await ExecuteNonQueryAsync(sql, cmd =>
+            {
+                foreach (var pair in data)
+                    cmd.Parameters.AddWithValue($"@{pair.Key}", pair.Value);
+
+                if (whereParameters != null)
+                {
+                    foreach (var pair in whereParameters)
+                        cmd.Parameters.AddWithValue($"@{pair.Key}", pair.Value);
+                }
+            });
+
+            string selectSql = $"SELECT * FROM {tableName} WHERE {whereClause} LIMIT 1;";
+            var updated = await ExecuteQueryAsync(selectSql, cmd =>
+            {
+                if (whereParameters != null)
+                {
+                    foreach (var pair in whereParameters)
+                        cmd.Parameters.AddWithValue($"@{pair.Key}", pair.Value);
+                }
+            },
+            reader =>
+            {
+                var dict = new Dictionary<string, object>();
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    dict[reader.GetName(i)] = reader.GetValue(i);
+                }
+                return dict;
+            });
+
+            return updated.FirstOrDefault();
+        }
+
 
         public void Close()
         {

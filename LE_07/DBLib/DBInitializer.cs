@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Common;
-using MySql.Data.MySqlClient;
 
 namespace DBLib
 {
@@ -12,20 +10,20 @@ namespace DBLib
             {
                 using (var connection = DBConnection.GetConnection())
                 {
-                    connection.Open();
-                    var createDatabaseQuery = $"CREATE DATABASE IF NOT EXISTS '{databaseName}';";
+                    
+                    var createDatabaseQuery = $"CREATE DATABASE IF NOT EXISTS {databaseName};";
 
                     using (var cmd = connection.CreateCommand())
                     {
                         cmd.CommandText = createDatabaseQuery;
                         cmd.ExecuteNonQuery();
-                        Console.WriteLine($"Database '{databaseName}' created or already exists.");
+                        Console.WriteLine($"Database {databaseName} created or already exists.");
                     }
                 }
 
                 using (var dbConnection = DBConnection.GetConnection(databaseName))
                 {
-                    dbConnection.Open();
+                    
 
                     using (var cmd = dbConnection.CreateCommand())
                     {

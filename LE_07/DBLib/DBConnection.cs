@@ -3,6 +3,7 @@ using System.IO;
 using System.Data.Common;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace DBLib
 {
@@ -38,16 +39,23 @@ namespace DBLib
 
         public static DbConnection GetConnection()
         {
-            return new MySqlConnection(connectionString);
+            var connection = new MySqlConnection(connectionString);
+            if (connection.State != ConnectionState.Open)
+                connection.Open();
+
+            return connection;
         }
 
         public static DbConnection GetConnection(string database)
-        {
+        {           
             var builder = new MySqlConnectionStringBuilder(connectionString)
             {
                 Database = database
             };
-            return new MySqlConnection(builder.ConnectionString);
+            var connection = new MySqlConnection(builder.ConnectionString);
+            if (connection.State != ConnectionState.Open)
+                connection.Open();
+            return connection;
         }
     }
 }
