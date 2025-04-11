@@ -10,7 +10,7 @@ namespace Ex0801.Interfaces
 {
     public interface IDataService
     {
-        Task<bool> UserExistsAsync(string username, string password);
+        Task<int?> UserExistsAsync(string username, string password);
         Task<IEnumerable<Customer>> GetAllCustomersAsync();
         Task<int> AddNewUserAsync(string username, string password);
         Task<int> AddNewCustomerAsync(Customer customer);

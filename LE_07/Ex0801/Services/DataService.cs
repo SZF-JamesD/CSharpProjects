@@ -1,13 +1,11 @@
-﻿using System;
+﻿using DBLib;
+using Ex0801.Interfaces;
+using Ex0801.Models;
+using MvvmUtilities.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DBLib;
-using Ex0801.Models;
-using MvvmUtilities;
-using Ex0801.Interfaces;
-using MvvmUtilities.Interfaces;
-using System.Windows.Controls;
 
 namespace Ex0801.Services
 {
@@ -22,20 +20,23 @@ namespace Ex0801.Services
             _dialogService = dialogService;
         }
 
-        public async Task<bool> UserExistsAsync(string username, string password)
+        public async Task<int?> UserExistsAsync(string username, string password)
         {
             try
             {
-                var sql = "select count(1) from users where username = username and password = password";
+                var sql = "select count(1) from users where username = @username and password = @password";
                 var parameters = new Dictionary<string, object>
                 {
                     {"username", username },
                     {"password", password }
                 };
                 
-                var results = await _dbService.GetAsync<int>(sql, parameters, reader => reader.GetInt32(0));
-
-                return results.FirstOrDefault() > 0;
+                var results = await _dbService.GetAsync<int?>(sql, parameters, reader => reader.IsDBNull(0) ? (int?)null : reader.GetInt32(0));
+                foreach (var item in results)
+                {
+                    Console.WriteLine(item.ToString());
+                }
+                return results.FirstOrDefault();
             }
             catch (NullReferenceException ex) 
             {
@@ -88,7 +89,7 @@ namespace Ex0801.Services
 
         public async Task<int> AddNewCustomerAsync(Customer customer)
         {
-            var existingCustomer = await _dbService.GetAsync<int>("select from customers where email = @email",
+            var existingCustomer = await _dbService.GetAsync<int>("select * from customers where email = @email",
                 new Dictionary<string, object> { {"email", customer.Email} },
                 reader => Convert.ToInt32(reader["count(*)"])
                 );

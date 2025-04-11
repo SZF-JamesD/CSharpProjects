@@ -17,15 +17,23 @@ namespace Ex0801.ViewModels
         public string UserName
         {
             get => _userName;
-            set => SetProperty(ref _userName, value);
-        }
+            set
+            {
+                SetProperty(ref _userName, value);
+                ((AsyncRelayCommand)AddUserCommand).RaiseCanExecuteChanged();
+            }
+            }
 
         private string _password;
         public string Password
         {
             get => _password;
-            set => SetProperty(ref _password, value);
-        }
+            set
+            {
+                SetProperty(ref _password, value);
+                ((AsyncRelayCommand)AddUserCommand).RaiseCanExecuteChanged();
+            }
+            }
 
 
         public ICommand AddUserCommand { get; set; }
@@ -34,7 +42,8 @@ namespace Ex0801.ViewModels
         {
             _dataService = dataService;
             _dialogService = dialogService;
-            AddUserCommand = new AsyncRelayCommand(async () => await AddUserAsync(), canExecute: () => !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password));
+            AddUserCommand = new AsyncRelayCommand(async () => await AddUserAsync(), 
+                canExecute: () => !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password));
         }
 
         private async Task AddUserAsync()

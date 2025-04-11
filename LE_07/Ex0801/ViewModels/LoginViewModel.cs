@@ -37,8 +37,13 @@ namespace Ex0801.ViewModels
         {
             try
             {
-                if (await _dataService.UserExistsAsync(Username, Password))
+                var employeeId = await _dataService.UserExistsAsync(Username, Password);
+
+                if (employeeId.HasValue)
                 {
+                    var mainVM = App.ServiceProvider.GetRequiredService<MainWindowViewModel>();
+                    mainVM.LoggedEmployeeId = employeeId.Value;
+
                     _onLoginSuccess?.Invoke();
                 }
                 else

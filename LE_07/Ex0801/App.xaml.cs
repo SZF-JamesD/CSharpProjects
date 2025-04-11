@@ -70,7 +70,8 @@ namespace Ex0801
             
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<Func<DbConnection>>(_ => () => DBConnection.GetConnection());
+            //services.AddTransient<Func<DbConnection>>(_ => () => DBConnection.GetConnection());
+            services.AddTransient<Func<DbConnection>>(_ => () => DBConnection.GetConnection("gold_digger"));
             services.AddTransient<DBService>();
 
             services.AddSingleton<IDialogService, DialogService>();

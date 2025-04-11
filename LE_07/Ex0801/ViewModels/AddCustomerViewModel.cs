@@ -34,15 +34,23 @@ namespace Ex0801.ViewModels
         public string FirstName
         {
             get => _firstName;
-            set => SetProperty(ref _firstName, value);
+            set
+            {
+                SetProperty(ref _firstName, value);
+                ((AsyncRelayCommand)AddCustomerCommand).RaiseCanExecuteChanged();
+            }
         }
 
         private string _lastName;
         public string LastName
         {
             get => _lastName;
-            set => SetProperty(ref _lastName, value);
-        }
+            set
+            {
+                SetProperty(ref _lastName, value);
+                ((AsyncRelayCommand)AddCustomerCommand).RaiseCanExecuteChanged();
+            }
+            }
 
         private string _street;
         public string Street
@@ -81,14 +89,15 @@ namespace Ex0801.ViewModels
 
         
 
-        public ICommand AddCustomerCommand { get;}
+        public ICommand AddCustomerCommand { get; }
 
         public AddCustomerViewModel(IDataService dataService, IDialogService dialogService)
         {
             _dataService = dataService;
             _dialogService = dialogService;
 
-            AddCustomerCommand = new AsyncRelayCommand<Customer>(async (_customer) => await AddCustomerAsync(), canExecute: (_customer) => !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName));
+            AddCustomerCommand = new AsyncRelayCommand(async () => await AddCustomerAsync(), 
+                canExecute: () => !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName));
         }   
 
         private bool AreFieldsValid()
@@ -143,6 +152,7 @@ namespace Ex0801.ViewModels
                 _customers.Add(newcustomer);
 
                 _dialogService.ShowMessage("Customer created successfully!", "Success");
+
             }
         }
 

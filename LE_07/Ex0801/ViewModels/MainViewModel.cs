@@ -1,14 +1,13 @@
-﻿using MvvmUtilities;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using Ex0801.Interfaces;
 using Ex0801.Models;
 using Ex0801.Views;
-using Ex0801.Services;
-using System.Windows;
-using MvvmUtilities.Interfaces;
-using Ex0801.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using MvvmUtilities;
+using MvvmUtilities.Interfaces;
 using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Ex0801.ViewModels
 {

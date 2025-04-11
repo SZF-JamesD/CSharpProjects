@@ -16,7 +16,7 @@ namespace DBLib
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
-        private DbConnection GetOPenConnection()
+        private DbConnection GetOpenConnection()
         {
             var conn = _connectionFactory();
             if (conn.State != System.Data.ConnectionState.Open)
@@ -110,7 +110,7 @@ namespace DBLib
 
         private async Task<int> ExecuteNonQueryAsync(string sql, Action<MySqlCommand> paramSetter)
         {
-            using (var connection = GetOPenConnection())
+            using (var connection = GetOpenConnection())
             using (var cmd = new MySqlCommand(sql, (MySqlConnection)connection))
             {
                 paramSetter(cmd);
@@ -120,7 +120,7 @@ namespace DBLib
 
         private async Task<T> ExecuteScalarAsync<T>(string sql, Action<MySqlCommand> paramSetter)
         {
-            using (var connection = GetOPenConnection())
+            using (var connection = GetOpenConnection())
             using (var cmd = new MySqlCommand(sql, (MySqlConnection)connection))
             {
                 paramSetter(cmd);
@@ -132,7 +132,7 @@ namespace DBLib
         private async Task<List<T>> ExecuteQueryAsync<T>(string sql, Action<MySqlCommand> paramSetter, Func<MySqlDataReader, T> mapper)
         {
             var results = new List<T>();
-            using (var connection = GetOPenConnection())
+            using (var connection = GetOpenConnection())
             using (var cmd = new MySqlCommand(sql, (MySqlConnection)connection))
             {
                 paramSetter(cmd);
