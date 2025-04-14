@@ -3,12 +3,12 @@ using System.Windows;
 
 namespace Ex0801.Views
 {
-    public partial class AddUserView : Window
+    public partial class CustomerDetailView : Window
     {
-        public AddUserView(AddUserViewModel viewModel)
+        public CustomerDetailView(CustomerDetailViewModel vm)
         {
             InitializeComponent();
-            DataContext = viewModel;
+            DataContext = vm;
         }
     }
 }

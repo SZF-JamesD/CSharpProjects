@@ -1,15 +1,11 @@
-﻿using Ex0801.Models;
-using Ex0801.Services;
+﻿using Ex0801.Interfaces;
+using Ex0801.Models;
 using MvvmUtilities;
-using System;
-using System.Collections.Generic;
+using MvvmUtilities.Interfaces;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using MvvmUtilities.Interfaces;
-using Ex0801.Interfaces;
 
 namespace Ex0801.ViewModels
 {
@@ -58,6 +54,19 @@ namespace Ex0801.ViewModels
             set => SetProperty(ref _postCode, value);
         }
 
+        public string PostCodeText
+        {
+            get => _postCode.ToString();
+            set
+            {
+                if (int.TryParse(value, out int parsed))
+                {
+                    Postcode = parsed;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public string City
         {
             get => _city;
@@ -96,7 +105,7 @@ namespace Ex0801.ViewModels
             _dialogService = dialogService;
 
 
-            SaveChangesCommand = new AsyncRelayCommand<Customer>(async (_customer) => await SaveChangesAsync(), canExecute: (_customer) => _customer != null);
+            SaveChangesCommand = new AsyncRelayCommand(async () => await SaveChangesAsync(), canExecute: () => _customer != null);
         }
 
         public void SetContext(ObservableCollection<Customer> customers, Customer customer)
@@ -110,8 +119,16 @@ namespace Ex0801.ViewModels
             var confirmation = _dialogService.AskUserConfirmation("Are you sure you want to make these changes?");
 
             if (confirmation)
-            { 
-                var data = Customer.ToDict();
+            {
+                _customer.FirstName = FirstName;
+                _customer.LastName = LastName;
+                _customer.Street = Street;
+                _customer.HouseNo = HouseNo;
+                _customer.PostCode = Postcode;
+                _customer.City = City;
+                _customer.Email = Email;
+
+                var data = _customer.ToDict();
 
                 await _dataService.EditCustomerAsync(data);
 

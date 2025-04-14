@@ -1,20 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Ex0801.Models
 {
-    public class Customer
+    public class Customer : INotifyPropertyChanged
     {
-        public int? CustId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Street { get; set; }
-        public string HouseNo { get; set; }
-        public int PostCode { get; set; }
-        public string City { get; set; }
-        public string Email { get; set; }
-        public int CreatedBy { get; set; }
+        private int? _custId;
+        private string _firstName;
+        private string _lastName;
+        private string _street;
+        private string _houseNo;
+        private int _postCode;
+        private string _city;
+        private string _email;
+        private int _createdBy;
 
+        public int? CustId
+        {
+            get => _custId;
+            set => SetProperty(ref _custId, value);
+        }
+
+        public string FirstName
+        {
+            get => _firstName;
+            set => SetProperty(ref _firstName, value);
+        }
+
+        public string LastName
+        {
+            get => _lastName;
+            set => SetProperty(ref _lastName, value);
+        }
+
+        public string Street
+        {
+            get => _street;
+            set => SetProperty(ref _street, value);
+        }
+
+        public string HouseNo
+        {
+            get => _houseNo;
+            set => SetProperty(ref _houseNo, value);
+        }
+
+        public int PostCode
+        {
+            get => _postCode;
+            set => SetProperty(ref _postCode, value);
+        }
+
+        public string City
+        {
+            get => _city;
+            set => SetProperty(ref _city, value);
+        }
+
+        public string Email
+        {
+            get => _email;
+            set => SetProperty(ref _email, value);
+        }
+
+        public int CreatedBy
+        {
+            get => _createdBy;
+            set => SetProperty(ref _createdBy, value);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (!EqualityComparer<T>.Default.Equals(field, value))
+            {
+                field = value;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+            return false;
+        }
 
         public Customer(string firstName, string lastName, string street, string houseNo, int postCode, string city, string email, int createdBy, int? custId = null)
         {

@@ -1,6 +1,7 @@
-﻿using Ex0801.Models;
-using Ex0801.Services;
+﻿using Ex0801.Interfaces;
+using Ex0801.Models;
 using MvvmUtilities;
+using MvvmUtilities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,9 +9,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ValidationLib;
-using Ex0801.Interfaces;
-using MvvmUtilities.Interfaces;
-using System.Configuration;
 
 namespace Ex0801.ViewModels
 {

@@ -20,15 +20,17 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBox Name="FirstNameTextBox" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="First Name..." Grid.Row="0" Margin="5"/>
-        <TextBox Name="LastNameTextBox" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Last Name..." Grid.Row="1" Margin="5"/>
-        <TextBox Name="StreetTextBox" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Street..." Grid.Row="2" Margin="5"/>
-        <TextBox Name="HousenoTextBox" Text="{Binding HouseNo, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="house Number..." Grid.Row="3" Margin="5"/>
-        <TextBox Name="PostCodeTextBox" Text="{Binding PostCode, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Post Code..." Grid.Row="4" Margin="5"/>
-        <TextBox Name="CityTextBox" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="City..." Grid.Row="5" Margin="5"/>
-        <TextBox Name="EmailTextBox" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Email Address..." Grid.Row="6" Margin="5"/>
+        <Label Content="Add Cusomter" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0"/>
 
-        <Button Content="Add new customer" Command="{Binding AddCustomerCommand}" HorizontalAlignment="Center" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Width="120" Padding="1,1,1,1" Margin="5,5,5,5"/>
+        <TextBox Name="FirstNameTextBox" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="First Name..." Grid.Row="1" Margin="5"/>
+        <TextBox Name="LastNameTextBox" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Last Name..." Grid.Row="2" Margin="5"/>
+        <TextBox Name="StreetTextBox" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Street..." Grid.Row="3" Margin="5"/>
+        <TextBox Name="HousenoTextBox" Text="{Binding HouseNo, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="house Number..." Grid.Row="4" Margin="5"/>
+        <TextBox Name="PostCodeTextBox" Text="{Binding PostCode, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Post Code..." Grid.Row="5" Margin="5"/>
+        <TextBox Name="CityTextBox" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="City..." Grid.Row="6" Margin="6"/>
+        <TextBox Name="EmailTextBox" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="Email Address..." Grid.Row="7" Margin="5"/>
+
+        <Button Content="Add new customer" Command="{Binding AddCustomerCommand}" HorizontalAlignment="Center" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Width="120" Padding="1,1,1,1" Margin="5,5,5,5"/>
 
 
     </Grid>

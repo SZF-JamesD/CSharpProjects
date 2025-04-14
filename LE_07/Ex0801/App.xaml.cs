@@ -85,6 +85,7 @@ namespace Ex0801
             services.AddTransient<AddCustomerViewModel>();
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<EditCustomerViewModel>();
+            services.AddTransient<CustomerDetailViewModel>();
 
             services.AddSingleton<MainWindow>();
             services.AddTransient<LoginView>();
@@ -92,6 +93,7 @@ namespace Ex0801
             services.AddTransient<AddCustomerView>();
             services.AddTransient<AddUserView>();
             services.AddTransient<EditCustomerView>();
+            services.AddTransient<CustomerDetailView>();
         }
     }
 }

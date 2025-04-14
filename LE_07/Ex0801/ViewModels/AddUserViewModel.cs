@@ -1,10 +1,9 @@
-﻿using Ex0801.Services;
+﻿using Ex0801.Interfaces;
 using MvvmUtilities;
+using MvvmUtilities.Interfaces;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ex0801.Interfaces;
-using MvvmUtilities.Interfaces;
 
 namespace Ex0801.ViewModels
 {
@@ -13,13 +12,13 @@ namespace Ex0801.ViewModels
         private readonly IDataService _dataService;
         private readonly IDialogService _dialogService;
 
-        private string _userName;
-        public string UserName
+        private string _username;
+        public string Username
         {
-            get => _userName;
+            get => _username;
             set
             {
-                SetProperty(ref _userName, value);
+                SetProperty(ref _username, value);
                 ((AsyncRelayCommand)AddUserCommand).RaiseCanExecuteChanged();
             }
             }
@@ -36,21 +35,22 @@ namespace Ex0801.ViewModels
             }
 
 
-        public ICommand AddUserCommand { get; set; }
+        public ICommand AddUserCommand { get; }
 
         public AddUserViewModel(IDataService dataService, IDialogService dialogService)
         {
             _dataService = dataService;
             _dialogService = dialogService;
+
             AddUserCommand = new AsyncRelayCommand(async () => await AddUserAsync(), 
-                canExecute: () => !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password));
+                canExecute: () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password));
         }
 
         private async Task AddUserAsync()
         {
             try
             {
-                await _dataService.AddNewUserAsync(UserName, Password);
+                await _dataService.AddNewUserAsync(Username, Password);
                 _dialogService.ShowMessage("User created successfully!");
             }
             catch (InvalidOperationException ex)

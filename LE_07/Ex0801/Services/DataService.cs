@@ -24,7 +24,7 @@ namespace Ex0801.Services
         {
             try
             {
-                var sql = "select count(1) from users where username = @username and password = @password";
+                var sql = "select user_id from users where username = @username and password = @password";
                 var parameters = new Dictionary<string, object>
                 {
                     {"username", username },
@@ -67,7 +67,7 @@ namespace Ex0801.Services
         {
             var tableName = "users";
 
-            var existingUser = await _dbService.GetAsync<int>("select * from users wehre username = @username",
+            var existingUser = await _dbService.GetAsync<int>("select * from users where username = @username",
                 new Dictionary<string, object> { {"username", username } },
                 reader => Convert.ToInt32(reader["Count(*)"])
                 );
@@ -87,7 +87,7 @@ namespace Ex0801.Services
         }
 
 
-        public async Task<int> AddNewCustomerAsync(Customer customer)
+        public async Task<Customer> AddNewCustomerAsync(Customer customer)
         {
             var existingCustomer = await _dbService.GetAsync<int>("select * from customers where email = @email",
                 new Dictionary<string, object> { {"email", customer.Email} },
@@ -99,21 +99,30 @@ namespace Ex0801.Services
                 throw new InvalidOperationException("A customer with this email already exists.");
             }
 
-            return await _dbService.AddAsync("customers", customer.ToDict());
+            await _dbService.AddAsync("customers", customer.ToDict());
+
+            var insertedId = await _dbService.GetAsync<int>(
+                "SELECT LAST_INSERT_ID()",
+                new Dictionary<string, object>(),
+                reader => Convert.ToInt32(reader[0])
+            );
+
+                customer.CustId = insertedId.FirstOrDefault();
+                return customer;
         }
 
         public async Task<Customer> EditCustomerAsync(Dictionary<string, object> data)
         {
-            if (!data.ContainsKey("CustId"))
+            if (!data.ContainsKey("customer_id"))
                 throw new ArgumentException("Customer ID is required to update a customer");
 
-            int custId = Convert.ToInt32(data["CustId"]);
+            int customer_id = Convert.ToInt32(data["customer_id"]);
 
-            var whereClause = "CustId = @CustId";
-            var whereParams = new Dictionary<string, object> { { "CustId", custId } };
+            var whereClause = "customer_id = @customer_id";
+            var whereParams = new Dictionary<string, object> { { "customer_id", customer_id} };
 
             var updateData = new Dictionary<string, object>(data);
-            updateData.Remove("CustId");
+            updateData.Remove("customer_id");
 
             var updatedDict = await _dbService.UpdateAsync("customers", updateData, whereClause, whereParams);
 
@@ -121,7 +130,7 @@ namespace Ex0801.Services
         }
 
 
-        public async Task DeleteCustomerAsync(int customerId)
+        public async Task DeleteCustomerAsync(int? customerId)
         {
             var tableName = "customers";
             var keyColumn = "customer_id";

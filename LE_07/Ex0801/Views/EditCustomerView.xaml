@@ -17,18 +17,20 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBox Name="FirstNameTextBox" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="{Binding FirstName}" Grid.Row="0" Margin="5"/>
-        <TextBox Name="LastNameTextBox" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="{Binding LastName}" Grid.Row="1" Margin="5"/>
-        <TextBox Name="StreetTextBox" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="{Binding Street}" Grid.Row="2" Margin="5"/>
-        <TextBox Name="HousenoTextBox" Text="{Binding HouseNo, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="{Binding HouseNo}" Grid.Row="3" Margin="5"/>
-        <TextBox Name="PostCodeTextBox" Text="{Binding PostCode, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="{Binding PostCode}" Grid.Row="4" Margin="5"/>
-        <TextBox Name="CityTextBox" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="{Binding City}" Grid.Row="5" Margin="5"/>
-        <TextBox Name="EmailTextBox" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" helpers:WatermarkService.Watermark="{Binding Email}" Grid.Row="6" Margin="5"/>
+        <Label Content="Edit Cusomter" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0"/>
+        <TextBox Name="FirstNameTextBox" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="1" Margin="5"/>
+        <TextBox Name="LastNameTextBox" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="2" Margin="5"/>
+        <TextBox Name="StreetTextBox" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="3" Margin="5"/>
+        <TextBox Name="HousenoTextBox" Text="{Binding HouseNo, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Margin="5"/>
+        <TextBox Name="PostCodeTextBox" Text="{Binding PostCodeText, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="5" Margin="5"/>
+        <TextBox Name="CityTextBox" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Margin="5"/>
+        <TextBox Name="EmailTextBox" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="7" Margin="5"/>
 
-        <Button Content="Confirm Changes" Command="{Binding ToSaveChangesAsync}" HorizontalAlignment="Center" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Width="120" Padding="1,1,1,1" Margin="5,5,5,5"/>
+        <Button Content="Confirm Changes" Command="{Binding SaveChangesCommand}" HorizontalAlignment="Center" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Width="120" Padding="1,1,1,1" Margin="5,5,5,5"/>
 
     </Grid>
 </Window>

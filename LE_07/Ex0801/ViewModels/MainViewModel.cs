@@ -17,13 +17,17 @@ namespace Ex0801.ViewModels
         public ICommand ToEditCustomerCommand { get; }
         public ICommand DeleteCustomerCommand { get; }
         public ICommand ExitCommand { get; }
+        public ICommand ToCustomerDetailsCommand { get; }
         public ObservableCollection<Customer> Customers { get; set; }
 
         private Customer _selectedCustomer;
         public Customer SelectedCustomer
         {
             get { return _selectedCustomer; }
-            set { SetProperty(ref _selectedCustomer, value); }
+            set 
+            { 
+                SetProperty(ref _selectedCustomer, value);
+            }
         }
 
         public int LoggedEmployeeId { get; set; }
@@ -38,9 +42,10 @@ namespace Ex0801.ViewModels
             Customers = new ObservableCollection<Customer>();
 
             ToAddCustomerCommand = new RelayCommand(OpenAddcustomerWindow);
-            ToEditCustomerCommand = new RelayCommand<Customer>(customer => { var parameters = (Customers, customer); OpenEditCustomerWindow(parameters); });
-            DeleteCustomerCommand = new RelayCommand<Customer>(DeleteCustomer);
+            ToEditCustomerCommand = new RelayCommand(OpenEditCustomerWindow);
+            DeleteCustomerCommand = new RelayCommand(DeleteCustomer);
             ExitCommand = new RelayCommand(ExitProgram);
+            ToCustomerDetailsCommand = new RelayCommand(OnCustomerDoubleClick);
 
             LoadCustomers();
         }
@@ -73,27 +78,45 @@ namespace Ex0801.ViewModels
         }
 
 
-        private void OpenEditCustomerWindow((ObservableCollection<Customer> customers, Customer customer) parameters)
+        private void OpenEditCustomerWindow()
         {
-            if (parameters.Item2 != null)
+            if (SelectedCustomer != null)
             {
                 var editCustomerView = App.ServiceProvider.GetRequiredService<EditCustomerView>();
                 if (editCustomerView.DataContext is EditCustomerViewModel vm)
                 {
-                    vm.SetContext(parameters.Item1, parameters.Item2);
+                    vm.SetContext(Customers, SelectedCustomer);
                 }
                 editCustomerView.Show();
             }
             else _dialogService.ShowError("You must have a customer selected!", "Error");
         }
 
-        private void DeleteCustomer(Customer customer)
+        private void DeleteCustomer()
         {
-            if (customer != null)
+            if (SelectedCustomer != null)
             {
-                Customers.Remove(customer);
+                _dataService.DeleteCustomerAsync(SelectedCustomer.CustId);
+                Customers.Remove(SelectedCustomer);
             }
             else _dialogService.ShowError("You must have a customer selected!", "Error");
+        }
+
+        private void OnCustomerDoubleClick()
+        {
+            if (SelectedCustomer != null)
+            {
+                var detailView = App.ServiceProvider.GetRequiredService<CustomerDetailView>();
+                if (detailView.DataContext is CustomerDetailViewModel vm)
+                {
+                    vm.SetContext(SelectedCustomer);
+                }
+                detailView.Show();
+            }
+            else
+            {
+                _dialogService.ShowError("You must select a customer to view details", "No selection");
+            }
         }
 
         private void ExitProgram()

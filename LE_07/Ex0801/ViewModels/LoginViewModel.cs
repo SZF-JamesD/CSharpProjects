@@ -22,6 +22,8 @@ namespace Ex0801.ViewModels
         public ICommand LoginCommand { get; }
         public ICommand ToAddNewUserCommand { get; }
 
+        public int LoggedEmployeeId { get; private set; }
+
         public LoginViewModel(IDialogService dialogService, IDataService dataService)
         {
             _dialogService = dialogService;
