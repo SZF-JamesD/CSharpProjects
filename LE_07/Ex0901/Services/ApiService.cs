@@ -13,7 +13,7 @@ namespace Ex0901.Services
     public class ApiService : IApiService
     {
         private readonly IDialogService _dialogService;
-        private readonly string _apiKey = "38ecdfc00a06ba828f61e264db280dd3";
+        private readonly string _apiKey = System.IO.File.ReadAllText("../../Data/ApiKey.txt");
 
         public async Task<JObject> ResponseHandler(HttpResponseMessage response)
         {

@@ -155,7 +155,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Data\ApiKey.txt" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MvvmUtilities\MvvmUtilities.csproj">
       <Project>{eefd285e-437d-4c20-8714-391d822190ac}</Project>
