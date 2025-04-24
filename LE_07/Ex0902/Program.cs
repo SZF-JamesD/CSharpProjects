@@ -22,7 +22,8 @@ builder.Services
     .AddScoped<IUserRepository, UserRepository>()
 
     .AddControllers();
-    builder.Services.AddEndpointsApiExplorer()
+
+builder.Services.AddEndpointsApiExplorer()
     .AddSwaggerGen(c =>
     {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "GoldDiggerApi", Version = "v1" });

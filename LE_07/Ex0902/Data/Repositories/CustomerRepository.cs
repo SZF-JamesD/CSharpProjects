@@ -21,7 +21,7 @@ namespace Ex0902.Data.Repositories
                 {
                     var d = new Dictionary<string, object>();
                     for (int i = 0; i < reader.FieldCount; i++)
-                        d[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                        d[reader.GetName(i)] = reader.IsDBNull(i) ? null! : reader.GetValue(i);
                     return d;
                 });
             return rows.Select(Customer.FromDict);
@@ -35,7 +35,7 @@ namespace Ex0902.Data.Repositories
                 {
                     var d = new Dictionary<string, object>();
                     for (int i = 0; i < reader.FieldCount; i++)
-                        d[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                        d[reader.GetName(i)] = reader.IsDBNull(i) ? null! : reader.GetValue(i);
                     return d;
                 });
             var dict = rows.FirstOrDefault();
@@ -50,7 +50,7 @@ namespace Ex0902.Data.Repositories
 
         public async Task<bool> UpdateCustomerAsync(Customer customer)
         {
-            var whereParams = new Dictionary<string, object> { { "customer_id", customer.CustomerId } };
+            var whereParams = new Dictionary<string, object> { { "customer_id", customer.CustomerId! } };
             var data = customer.ToDict();
 
             var updatedDict = await _dbService.UpdateAsync("customers", data, "customer_id = @customer_id", whereParams);

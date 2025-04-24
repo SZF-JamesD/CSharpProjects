@@ -26,7 +26,10 @@ namespace Ex0902.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var newUserId = await _userRepository.CreateUserAsync(dto);
-            return CreatedAtAction(null, new { id = newUserId , dto.Username, dto.Password});
+
+            if (newUserId == null) return Conflict("Username is already taken.");
+
+            return CreatedAtAction(null, new { id = newUserId});
         }
 
         [HttpPost("login")]

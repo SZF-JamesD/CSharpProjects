@@ -1,11 +1,8 @@
 ﻿using Ex0902.Data.DTOs;
 using Ex0902.Data.Interfaces;
-using Ex0902.Models;
 using Ex0902.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Ex0902.Controllers
 {
