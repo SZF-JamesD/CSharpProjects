@@ -9,26 +9,21 @@ namespace DBLib
 {
     public static class DBConnection
     {
-        private static readonly string connectionString;
-        static DBConnection()
+        private static string connectionString;
+
+        public static void LoadConnection(string configPath)
         {
             try
             {
-                string configPath = Environment.GetEnvironmentVariable("DB_CONFIG_PATH") ?? "../../../../dbconfig.json";
-
                 if (!File.Exists(configPath))
-                {
                     throw new FileNotFoundException("Configuration file not found: " + configPath);
-                }
 
                 string json = File.ReadAllText(configPath);
                 var jObject = JObject.Parse(json);
                 connectionString = jObject["dbConnectionString"]?.ToString();
 
                 if (string.IsNullOrEmpty(connectionString))
-                {
                     throw new Exception("The 'dbConnectionString' was not found in the config file.");
-                }
             }
             catch (Exception ex)
             {
@@ -42,12 +37,11 @@ namespace DBLib
             var connection = new MySqlConnection(connectionString);
             if (connection.State != ConnectionState.Open)
                 connection.Open();
-
             return connection;
         }
 
         public static DbConnection GetConnection(string database)
-        {           
+        {
             var builder = new MySqlConnectionStringBuilder(connectionString)
             {
                 Database = database
@@ -59,3 +53,4 @@ namespace DBLib
         }
     }
 }
+

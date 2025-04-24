@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Ex0902.Models
+namespace Ex0902.Data.DTOs
 {
-    public class User
+    public class UserDto
     {
-        public int? UserId { get;  set; }
-
         [Required]
         [StringLength(50)]
         public required string Username { get; set; }

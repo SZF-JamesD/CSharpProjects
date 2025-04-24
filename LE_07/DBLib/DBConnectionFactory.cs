@@ -9,14 +9,15 @@ namespace DBLib
 {
     public static class DbConnectionFactory
     {
-        public static Func<DbConnection> CreateConnection(string dbName = null)
+        public static Func<DbConnection> CreateConnection(string configPath, string dbName = null)
         {
+            DBConnection.LoadConnection(configPath);
+
             return () =>
             {
-                if (string.IsNullOrEmpty(dbName))
-                    return DBConnection.GetConnection();
-                else
-                    return DBConnection.GetConnection(dbName);
+                return string.IsNullOrEmpty(dbName)
+                    ? DBConnection.GetConnection()
+                    : DBConnection.GetConnection(dbName);
             };
         }
     }
