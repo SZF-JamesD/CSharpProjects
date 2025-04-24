@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Ex0902.Models;
+﻿using Ex0902.Data.DTOs;
 using Ex0902.Data.Interfaces;
-using System.Threading.Tasks;
-using Ex0902.Data.DTOs;
 using Ex0902.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ex0902.Controllers
 {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Ex0902.Models
 {

@@ -1,11 +1,7 @@
-﻿using Ex0902.Data.Interfaces;
-using DBLib;
-using Ex0902.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Drawing.Printing;
+﻿using DBLib;
 using Ex0902.Data.DTOs;
+using Ex0902.Data.Interfaces;
+using Ex0902.Models;
 
 namespace Ex0902.Data.Repositories
 {
